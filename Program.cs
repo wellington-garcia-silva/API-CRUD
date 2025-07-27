@@ -1,10 +1,14 @@
+using Person.Data;
+using Person.Routes;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<PersonContext>();
+
 
 var app = builder.Build(); // ← Faltava essa linha para construir o app
 
@@ -15,7 +19,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.PersonRoutes(app); // ← Faltava ponto e vírgula
+app.PersonRoutes(); // ← Faltava ponto e vírgula
 
 app.UseHttpsRedirection(); // ← Faltavam parênteses
 app.Run();
