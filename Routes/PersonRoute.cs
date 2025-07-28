@@ -12,11 +12,12 @@ public static class PersonRoute
         var route = app.MapGroup("person");
 
         route.MapPost("",
-            async (PersonRequest req, PersonContext context) =>
+            async ([FromBody] PersonRequest req, PersonContext context) =>
             {
                 var person = new PersonModel(req.name);
                 await context.AddAsync(person);
                 await context.SaveChangesAsync();
+                return Results.Created($"/person/{person.Id}", person);
             });
 
         route.MapGet("", async (PersonContext context) =>
@@ -26,10 +27,9 @@ public static class PersonRoute
         });
 
         route.MapPut("{id:guid}",
-            async (Guid id, PersonRequest req, PersonContext context) =>
+            async (Guid id, [FromBody] PersonRequest req, PersonContext context) =>
             {
                 var person = await context.People.FirstOrDefaultAsync(x => x.Id == id);
-
                 if (person == null)
                     return Results.NotFound();
 
@@ -39,7 +39,7 @@ public static class PersonRoute
             });
 
         route.MapDelete("{id:guid}",
-            async (Guid id, PersonRequest req, PersonContext context) =>
+            async (Guid id, [FromBody] PersonRequest req, PersonContext context) =>
             {
                 var person = await context.People.FirstOrDefaultAsync(x => x.Id == id);
                 if (person == null)
@@ -49,7 +49,5 @@ public static class PersonRoute
                 await context.SaveChangesAsync();
                 return Results.Ok(person);
             });
-
     }
-
 }

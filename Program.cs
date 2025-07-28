@@ -21,5 +21,6 @@ if (app.Environment.IsDevelopment())
 
 app.PersonRoutes(); // ← Faltava ponto e vírgula
 
-app.UseHttpsRedirection(); // ← Faltavam parênteses
+app.UseHttpsRedirection();
+
 app.Run();
